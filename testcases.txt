@@ -1,0 +1,154 @@
+﻿Error cases:
+Command Line: ./WTFserver  <invalid port#>
+Description: Input is only the executable and an invalid port number. This results in an error warning the user that there was an error on binding and that their permission is denied. 
+
+
+Command Line: ./WTFserver 
+Description: Input is only the executable and no port number. This results in an error warning the user that there was no port number provided. 
+
+
+Command Line: ./WTF configure <IP Address>
+Description: Input is only the executable, the configure command, and the IP address, but is missing the port#. This results in an error notifying the user that the number of arguments in not sufficient.
+
+
+Command Line: ./WTF configure <IP Address> <non-numerical port#>
+Description: Input is only the executable, the configure command, and the IP address, but the port number is not a valid number. This results in an error notifying the user that there was an error in creating the .configure file. 
+
+
+Command Line: ./WTF checkout <project name that already exists on the client>
+Description: Input is only the executable, the checkout command, and the name of a project that already exists on the client-side. This results in an error notifying the user that the project already exists on the client-side.
+
+
+Command Line: ./WTF checkout <project name that does not exist on the server>
+Description: Input is only the executable, the checkout command, and the name of a project that does not exist on the server. This results in an error notifying the user that the project does not exist on the server and that the checkout failed.
+
+
+Command Line: ./WTF checkout 
+Description: Input is only the executable, the checkout command, and the name of a project is not provided. This results in an error notifying the user that there was not a sufficient number of arguments provided to run the checkout command.
+
+
+
+
+
+
+Command Line: ./WTF update <project name that does not exist on the server> 
+Description: Input is only the executable, the update command, and the name of a project that does not exist on the server. This results in an error notifying the user that there was an error in updating. 
+
+
+Command Line: ./WTF upgrade <project name that does not exist on the server> 
+Description: Input is only the executable, the upgrade command, and the name of a project that does not exist on the server. This results in an error notifying the user that there was an error in upgrading. 
+
+
+Command Line: ./WTF commit <project name that does not exist on the server> 
+Description: Input is only the executable, the commit command, and the name of a project that does not exist on the server. This results in an error notifying the user that there was an error in committing. 
+
+
+Command Line: ./WTF push <project name that does not exist on the server> 
+Description: Input is only the executable, the push command, and the name of a project that does not exist on the server. This results in an error notifying the user that there was an error in pushing. 
+
+
+Command Line: ./WTF create <project name that already exists on the server> 
+Description: Input is only the executable, the create command, and the name of a project that already exists on the server. This results in an error notifying the user that there was an error in creating the project. 
+
+
+Command Line: ./WTF destroy <project name that does not exist on the server> 
+Description: Input is only the executable, the destroy command, and the name of a project that does not exist on the server. This results in an error notifying the user that there was an error in destroying the project. 
+
+
+Command Line: ./WTF add <project name that does not exist on client> <filename>
+Description: Input is only the executable, the add command,  the name of a project that does not exist on the client, and a filename. This results in an error notifying the user that the project does not exist on the client-side.
+
+
+Command Line: ./WTF add <project name> <filename that does not exist >
+Description: Input is only the executable, the add command,  the name of a project that exists on the client, and a filename that does not exist. This results in an error notifying the user that the file does not exist in the project.
+
+
+
+
+
+
+
+
+Command Line: ./WTF add <project name> <filename that has already been added to the .Manifest>
+Description: Input is only the executable, the add command,  the name of a project that exists on the client, and a filename that was already added to the .Manifest. This results in an error notifying the user that the file has already been added to the .Manifest.
+
+
+Command Line: ./WTF remove <project name that does not exist on client> <filename>
+Description: Input is only the executable, the remove command,  the name of a project that does not exist on the client, and a filename. This results in an error notifying the user that the project does not exist on the client-side.
+
+
+Command Line: ./WTF remove <project name> <filename that has already been removed>
+Description: Input is only the executable, the remove command,  the name of a project that does exists on the client, and a filename that has already been removed from the .Manifest. This results in an error notifying the user that the filename has already been removed from the .Manifest.
+
+
+Command Line: ./WTF currentversion <project name that does not exist on the server> 
+Description: Input is only the executable, the currentversion command,  the name of a project that does not exist on the server. This results in an error notifying the user that the project does not exist on the server.
+
+
+Command Line: ./WTF history <project name that does not exist on the server> 
+Description: Input is only the executable, the history command,  the name of a project that does not exist on the server. This results in an error notifying the user that the project does not exist on the server.
+
+
+Command Line: ./WTF rollback <project name that does not exist on the server> <version #>
+Description: Input is only the executable, the rollback command,  the name of a project that does not exist on the server, and a version#. This results in an error notifying the user that the project does not exist on the server.
+
+
+Command Line: ./WTF rollback <project name> <invalid version #>
+Description: Input is only the executable, the rollback command,  the name of a project, and an invalid version#. This results in an error notifying the user that the version of the project does not exist on the server. 
+
+
+Proper use cases:
+Command Line: ./WTFserver <port number>
+Description: The expected output is an “infinite loop” where the initialized server constantly listens and waits to be connected to. We used this test many times to test different port numbers. Then also to test the effectiveness of the pthreads and mutexes.
+
+
+Command Line: ./WTF configure <correct IP address/host name> <port# of server>
+Description: We used this test case to make sure that the ip and port number was correctly stored into the .configure file inside the cwd. And that the file could be created and written to .configure.
+
+
+Command Line: ./WTF create <project name>
+Description: We used this test case to make sure that the client could connect to the server and the server set up a project and manifest with the given project name. Then sent back the manifest and set it up on the client (as long as it did not exist before). Successful completion outputs a success message.
+
+
+Command Line: ./WTF add <project name> <filename>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This test case made sure that the filename was added properly by the user before being invoked. This test case also made sure that it ignored repeats and outputted an error message stating the file already exists if it is in the .Manifest already. Outputs success message.
+
+
+Command Line: ./WTF remove <project name> <filename>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This test case was used to make sure that it marked <filename> as R as long as it was not already marked as R for removed. It also checks to make sure the file is actually not in the project before adding the R flag. Outputs success message.
+
+
+Command Line: ./WTF currentversion <project name>
+Description:  This test case was used to ensure proper connection to the server and that the project name exists.We were using this test case to check that when given a project name, the client would successfully communicate to the server and the server would send back its manifest which then the client formats in a <filename> <version number> format for the user. Outputs success message.
+
+
+Command Line: ./WTF checkout <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name does not exist. The usefulness of this test case was in that the client made sure to successfully communicate with the server that it wants a copy of the project on its cwd. After making sure the client does not already have the project, the server tar’s its version of the project and sends it back where the client simply untars it. Outputs success message.
+
+
+Command Line: ./WTF history <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. We used this test case to make sure that after successful push’s that the history correctly compiled all commits to date and outputted <mode> <path> <version number>  of all recorded files.
+
+
+Command Line: ./WTF rollback <project name> <V#>
+Description: This test case was used to ensure proper connection to the server and that the project name exists, as well as the given version number is possible. We also had to use this test case to make sure the rollback properly deleted more recent versions than the one given.
+
+
+Command Line: ./WTF destroy <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This command works similar to roll back except every version of the project (if other versions exist) should be deleted and also the most current version (all versions). This outputs a success message.
+
+
+Command Line: ./WTF commit <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This test case was to ensure that changes done by a user were properly marked in the .Commit file and that the project version numbers matched before completing. This outputs the content of the .Commit in the format: <mode> <path>. This outputs a success message on success.
+
+
+Command Line: ./WTF push <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This test case was made to ensure that the push command would first match a client to it’s commit and then process the pending changes on the commit, and properly tarring and untarring files received from the user. It also tested that the manifest was sent back properly and updated. Outputs success message on success.
+
+
+Command Line: ./WTF update <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. This was used to ensure that a client could always request to be updated to the current version essentially. And working similarly to commit, update would create a .Update file for possible updates the user can upgrade to and a .Conflict file in case they can not be upgraded. The output of the update and conflict files follow: <mode> <path>. Outputs success on success.
+
+
+Command Line: ./WTF upgrade <project name>
+Description: This test case was used to ensure proper connection to the server and that the project name exists. Upgrade command takes the pending updates from the user and requests them from the client. This ensured that only the files on the .Update were sent back and properly untarred and that the client successfully deleted files from the client marked with ‘D’. Outputs success on success.

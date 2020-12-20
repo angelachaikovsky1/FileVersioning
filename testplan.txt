@@ -1,0 +1,24 @@
+﻿TestPlan for WTFtest:
+        DISCLAIMERS: Before graders start up the test, be aware of a couple things first. At the end of the program, WTFtest will call system() in order to kill the WTFserver process. This is done by a system(“pkill WTFserver”); be aware that this means any processes running names “WTFserver” on that user’s machine will all be killed. This kill command will also attempt to kill all other user’s WTFserver processes but obviously will not be permitted to, this will result in “errors” to STDOUT and this is to be expected. ALSO one more thing, be aware that if any other server is running on port number: 9521 , that my test will not run. Please wait for the port number to be available before running (or go into the WTFtest.c file and change the port numbers).
+
+
+        In order to effectively test the project we make sure to run a server as well as 2 clients alongside each other. The test outputs to terminal some helpful print statements in order to ease the flow of the process for a grader. The WTFtest, upon execution, creates 3 temporary folders that will serve as holders for the executables that will temporarily exist inside of them for proper running of the program. The test is driven by system() commands and changes directories by using chdir() commands. Initially the server is invoked by the ./WTFserver 9000 command where it will sit and listen for connection requests by both clients. A copy of the WTF executable is placed into folder client1 and client2, then the following commands are invoked.
+
+
+        First, client1 runs configure in order to properly prepare for connection, the first client creates a project called “Project” by running ./WTF create Project. Once this is complete, the second, client2, is invoked with the same configure command. In order to test the functionality of the program, client2 decided to checkout via the checkout command: ./WTF checkout Project. This creates a copy on the local side of client2, and at this point WTFserver client1 and client2 are all “up to date”. 
+
+
+After the setup is complete the client1 continues with the sequence of commands by using “echo” system commands to simulate a user adding files into the Project. Once complete the client1 adds these files to the version control by using the add command for each of the 4 files: ./WTF add Project file1. There are 4 different files added by client1, file1, file2, file3, file4. Once all are added the client1 removes one using unlink and then notifies the program via the remove command: “./WTF remove Project file4. 
+
+
+After the basic add and remove are complete, client 1 invokes a commit and push of the projects, ./WTF commit Project, where 3 files, file1, file2, file3, are committed as files to be added and outputted in the required format to stdout. Once, ./WTF push Project, is invoked, the 3 files added to the project get sent over to the server (locking the project) and the changes are completed, with the commits being saved to a .History file as well as the server sending back the updated .Manifest. The project is unlocked.
+
+
+Now, after client1 finishes some changes, client2 will go through some commands to get up to date. First the ./WTF history Project is invoked where the history of commits is outputted to stdout. Then similarly ./WTF currentversion Project is invoked to notify the client2 of files and their current versions.
+
+
+Once client2 sees the history of changes and the current state of the project, it wants to update. ./WTF update Project, will be invoked to compare the manifest of the client2 to the one the server has and any discrepancies will be stored accordingly into their respective .Update or .Conflict files. The content in these files is outputted to stdout for the user to see. Once the updates are loaded in, ./WTF upgrade Project is called so that these changes noted are finalized. After this process, client2 is up to date with the server and up to date to client1.
+        Finally, to test the last commands still unused, client2 decides to roll back the project to its first version ./WTF rollback Project 1. Then to end the existence of the project on the server side, ./WTF destroy Project, is invoked.
+
+
+        Now that all the commands are used, the actual WTFtest makes sure to clean up after itself and deletes server, client1 and client2 folders (in case the grader would like to test again). A kill command is sent to WTFserver so that the process ends. Feel free to comment out pieces of code.
